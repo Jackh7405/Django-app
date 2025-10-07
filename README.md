@@ -1,2 +1,2 @@
 # Django-app
-This repository is for Django apps.
+This is the repository for Django-app for DCBS Module
