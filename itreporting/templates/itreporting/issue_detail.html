@@ -1,0 +1,27 @@
+{% extends "itreporting/base.html" %}
+
+{% block content %}
+
+<h1 class="mb-4">IT Issue Details</h1>
+
+<article class="media content-section">
+    <div class="media-body">
+        <div class="article-metadata mb-2 d-flex align-items-center">
+            <img class="rounded-circle me-2" src="{{ object.author.profile.image.url }}" alt="Profile picture" width="40" height="40">
+            <a class="me-2" href="{% url 'itreporting:user-issues' object.author.username %}">
+                {{ object.author.username }}
+            </a>
+            <small class="text-muted">{{ object.date_submitted }}</small>
+        </div>
+
+        <h2 class="article-title">{{ object.type }} Issue in Room {{ object.room }}</h2>
+        <p class="article-content">{{ object.details }}</p>
+
+        {% if object.author == user %}
+            <a class="btn btn-secondary btn-sm mt-2 me-1" href="{% url 'itreporting:issue-update' object.id %}">Update</a>
+            <a class="btn btn-danger btn-sm mt-2" href="{% url 'itreporting:issue-delete' object.id %}">Delete</a>
+        {% endif %}
+    </div>
+</article>
+
+{% endblock content %}
