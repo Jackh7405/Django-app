@@ -1,0 +1,6 @@
+# In your project root, edit or create .gitignore
+echo "accessVirt/" >> .gitignore
+echo "*.pyc" >> .gitignore
+echo "__pycache__/" >> .gitignore
+echo "db.sqlite3" >> .gitignore
+echo ".env" >> .gitignore
