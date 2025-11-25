@@ -21,7 +21,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get('SECRET_KEY', 'Sk1b1d1R1zz67')
+
 # SECURITY WARNING: don't run with debug turned on in production!
 WEBSITE_HOSTNAME = os.environ.get('WEBSITE_HOSTNAME', None)
 DEBUG = WEBSITE_HOSTNAME == None
@@ -83,15 +83,21 @@ WSGI_APPLICATION = 'itapps.wsgi.application'
 
 import os
 
+from decouple import config
+
+# Security settings
+SECRET_KEY = config('Sk1b1d1R1zz67')
+DEBUG = config('DEBUG', default=False, cast=bool)
+
+# Database configuration
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': os.environ.get('AZURE_DB_NAME'),
-        'HOST': os.environ.get('AZURE_DB_HOST'),
-        'PORT': os.environ.get('AZURE_DB_PORT', '3306'),
-        'USER': os.environ.get('AZURE_DB_USER'),
-        'PASSWORD': os.environ.get('AZURE_DB_PASSWORD'),
-        
+        'NAME': config('AZURE_DB_NAME'),
+        'USER': config('AZURE_DB_USER'),
+        'PASSWORD': config('AZURE_DB_PASSWORD'),
+        'HOST': config('AZURE_DB_HOST'),
+        'PORT': config('AZURE_DB_PORT'),
     }
 }
 

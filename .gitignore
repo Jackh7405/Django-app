@@ -1,6 +1,33 @@
-# In your project root, edit or create .gitignore
-echo "accessVirt/" >> .gitignore
-echo "*.pyc" >> .gitignore
-echo "__pycache__/" >> .gitignore
-echo "db.sqlite3" >> .gitignore
-echo ".env" >> .gitignore
+# Virtual Environments
+accessVirt/
+venv/
+env/
+ENV/
+
+# Environment variables
+.env
+.env.local
+
+# Python
+*.pyc
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Django
+db.sqlite3
+*.sqlite3
+media/
+staticfiles/
+*.log
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
