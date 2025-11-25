@@ -86,8 +86,7 @@ import os
 from decouple import config
 
 # Security settings
-SECRET_KEY = config('Sk1b1d1R1zz67')
-DEBUG = config('DEBUG', default=False, cast=bool)
+SECRET_KEY = os.environ.get('SECRET_KEY', config('SECRET_KEY', default='Sk1b1d1R1zz67'))DEBUG = config('DEBUG', default=False, cast=bool)
 
 # Database configuration
 DATABASES = {
@@ -143,7 +142,7 @@ USE_TZ = True
 #MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 AZURE_SA_NAME = os.environ['AZURE_SA_NAME']
-AZURE_SA_KEY = os.environ['AZURE_SA_KEY']
+AZURE_SA_KEY = config('AZURE_SA_KEY', default='') 
 STORAGES = {
     "default": {
         "BACKEND": "storages.backends.azure_storage.AzureStorage",
