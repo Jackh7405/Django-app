@@ -22,37 +22,53 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 
-# SECURITY WARNING: don't run with debug turned on in production!
+
+# --- Environment Variable Detection ---
+# WEBSITE_HOSTNAME is automatically set by Azure App Service
 WEBSITE_HOSTNAME = os.environ.get("WEBSITE_HOSTNAME")
 
-# Detect production vs local
-if WEBSITE_HOSTNAME:
+# --- DEBUG Setting ---
+# Default to False in a cloud environment, True locally.
+# The environment variable "DEBUG" on Azure can override this, but should be set to "False"
+# in production App Settings to ensure security.
+DEBUG = os.environ.get("DEBUG", "False").lower() == "true"
+
+# If WEBSITE_HOSTNAME is present but no explicit DEBUG setting, default to production (False)
+if WEBSITE_HOSTNAME and os.environ.get("DEBUG") is None:
     DEBUG = False
-else:
+elif os.environ.get("DEBUG") is None:
+    # If not on Azure and no explicit DEBUG setting, default to local/True
     DEBUG = True
 
-# Allow Azure env override
-DEBUG = os.environ.get("DEBUG", str(DEBUG)) == "True"
-
-# Allowed hosts & CSRF
+# --- ALLOWED_HOSTS and CSRF Configuration ---
 if DEBUG:
+    # Development/Local Settings
+    # Use ['*'] for maximum flexibility during local testing
     ALLOWED_HOSTS = ['*', '127.0.0.1', 'localhost']
+    # CSRF_TRUSTED_ORIGINS defaults are usually sufficient for local development
+    CSRF_TRUSTED_ORIGINS = [] 
+
 else:
-    # Fallback to default Azure hostname patterns
+    # Production (Azure App Service) Settings
     host = WEBSITE_HOSTNAME or ""
     
+    # 1. ALLOWED_HOSTS: Include the primary hostname and the general Azure wildcard
     ALLOWED_HOSTS = [
         host,
         f"{host}".lower(),
+        ".azurewebsites.net", # Catches any appname.azurewebsites.net
     ]
     
-    # Add wildcard Azure fallback (auto-matches any app name)
-    ALLOWED_HOSTS.append(".azurewebsites.net")
-    
+    # 2. CSRF_TRUSTED_ORIGINS: Must include a fix for Azure's deep subdomains 
+    # (like the staging/instance hostname that failed)
     CSRF_TRUSTED_ORIGINS = [
         f"https://{host}",
-        f"https://*.azurewebsites.net",
+        f"https://*.azurewebsites.net", # Trusts appname.azurewebsites.net
+        # CRITICAL FIX: Trusts deep subdomains used by Azure internal routing (e.g., [GUID].uksouth-01.azurewebsites.net)
+        f"https://*.*.azurewebsites.net", 
     ]
+
+# SECURITY WARNING: Ensure DEBUG is False in production!
 
 
 # Security settings
