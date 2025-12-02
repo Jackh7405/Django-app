@@ -1,33 +1,3 @@
 # Virtual Environments
 accessVirt/
-venv/
-env/
-ENV/
-
-# Environment variables
-.env
-.env.local
-
-# Python
-*.pyc
 __pycache__/
-*.py[cod]
-*$py.class
-*.so
-
-# Django
-db.sqlite3
-*.sqlite3
-media/
-staticfiles/
-*.log
-
-# IDE
-.vscode/
-.idea/
-*.swp
-*.swo
-
-# OS
-.DS_Store
-Thumbs.db
