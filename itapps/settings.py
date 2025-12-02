@@ -86,7 +86,8 @@ import os
 from decouple import config
 
 # Security settings
-SECRET_KEY = os.environ.get('SECRET_KEY', config('SECRET_KEY', default='Sk1b1d1R1zz67'))DEBUG = config('DEBUG', default=False, cast=bool)
+SECRET_KEY = os.environ.get('SECRET_KEY', config('SECRET_KEY', default='Sk1b1d1R1zz67'))
+DEBUG = config('DEBUG', default=False, cast=bool)
 
 # Database configuration
 DATABASES = {
