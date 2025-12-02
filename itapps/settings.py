@@ -22,7 +22,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY', 'Sk1b1d1R1zz67')
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
-# DEBUG Setting
+## DEBUG Setting
 DEBUG = os.environ.get("DEBUG", "False").lower() == "true"
 
 if DEBUG:
@@ -40,11 +40,12 @@ else:
     # Production on Azure
     ALLOWED_HOSTS = [
         ".azurewebsites.net",
-        ".azurewebsites.net:443",
+        ".uksouth-01.azurewebsites.net",   # ⭐ REQUIRED for your region hostname
     ]
 
     CSRF_TRUSTED_ORIGINS = [
         "https://*.azurewebsites.net",
+        "https://*.uksouth-01.azurewebsites.net",   # ⭐ REQUIRED to fix CSRF
     ]
 
 
