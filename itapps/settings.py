@@ -81,25 +81,25 @@ WSGI_APPLICATION = 'itapps.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
-import os
 
-from decouple import config
+
 
 # Security settings
 SECRET_KEY = os.environ.get('SECRET_KEY', 'Sk1b1d1R1zz67')
-DEBUG = config('DEBUG', default=False, cast=bool)
+
 
 # Database configuration
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': config('AZURE_DB_NAME'),
-        'USER': config('AZURE_DB_USER'),
-        'PASSWORD': config('AZURE_DB_PASSWORD'),
-        'HOST': config('AZURE_DB_HOST'),
-        'PORT': config('AZURE_DB_PORT'),
+        'NAME': os.environ.get('AZURE_DB_NAME'),
+        'USER': os.environ.get('AZURE_DB_USER'),
+        'PASSWORD': os.environ.get('AZURE_DB_PASSWORD'),
+        'HOST': os.environ.get('AZURE_DB_HOST'),
+        'PORT': os.environ.get('AZURE_DB_PORT', '3306'),
     }
 }
+
 
 
 
@@ -143,7 +143,7 @@ USE_TZ = True
 #MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 AZURE_SA_NAME = os.environ['AZURE_SA_NAME']
-AZURE_SA_KEY = config('AZURE_SA_KEY', default='') 
+AZURE_SA_KEY = os.environ.get('AZURE_SA_KEY', default='') 
 STORAGES = {
     "default": {
         "BACKEND": "storages.backends.azure_storage.AzureStorage",
