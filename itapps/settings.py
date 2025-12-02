@@ -16,63 +16,27 @@ import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# Security settings
+SECRET_KEY = os.environ.get('SECRET_KEY', 'Sk1b1d1R1zz67')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
+WEBSITE_HOSTNAME = os.environ.get('WEBSITE_HOSTNAME', None) 
+
+DEBUG = WEBSITE_HOSTNAME == None 
+
+if DEBUG: 
+
+    ALLOWED_HOSTS = [] 
+
+else: 
+
+    ALLOWED_HOSTS = [WEBSITE_HOSTNAME] 
+
+    CSRF_TRUSTED_ORIGINS = [f'https://{WEBSITE_HOSTNAME}'] 
 
 
-# --- Environment Variable Detection ---
-# WEBSITE_HOSTNAME is automatically set by Azure App Service
-WEBSITE_HOSTNAME = os.environ.get("WEBSITE_HOSTNAME")
-
-# --- DEBUG Setting ---
-# Default to False in a cloud environment, True locally.
-# The environment variable "DEBUG" on Azure can override this, but should be set to "False"
-# in production App Settings to ensure security.
-DEBUG = os.environ.get("DEBUG", "False").lower() == "true"
-
-# If WEBSITE_HOSTNAME is present but no explicit DEBUG setting, default to production (False)
-if WEBSITE_HOSTNAME and os.environ.get("DEBUG") is None:
-    DEBUG = False
-elif os.environ.get("DEBUG") is None:
-    # If not on Azure and no explicit DEBUG setting, default to local/True
-    DEBUG = True
-
-# --- ALLOWED_HOSTS and CSRF Configuration ---
-if DEBUG:
-    # Development/Local Settings
-    # Use ['*'] for maximum flexibility during local testing
-    ALLOWED_HOSTS = ['*', '127.0.0.1', 'localhost']
-    # CSRF_TRUSTED_ORIGINS defaults are usually sufficient for local development
-    CSRF_TRUSTED_ORIGINS = [] 
-
-else:
-    # Production (Azure App Service) Settings
-    host = WEBSITE_HOSTNAME or ""
-    
-    # 1. ALLOWED_HOSTS: Include the primary hostname and the general Azure wildcard
-    ALLOWED_HOSTS = [
-        host,
-        f"{host}".lower(),
-        ".azurewebsites.net", # Catches any appname.azurewebsites.net
-    ]
-    
-    # 2. CSRF_TRUSTED_ORIGINS: Must include a fix for Azure's deep subdomains 
-    # (like the staging/instance hostname that failed)
-    CSRF_TRUSTED_ORIGINS = [
-        f"https://{host}",
-        f"https://*.azurewebsites.net", # Trusts appname.azurewebsites.net
-        # CRITICAL FIX: Trusts deep subdomains used by Azure internal routing (e.g., [GUID].uksouth-01.azurewebsites.net)
-        f"https://*.*.azurewebsites.net", 
-    ]
-
-# SECURITY WARNING: Ensure DEBUG is False in production!
-
-
-# Security settings
-SECRET_KEY = os.environ.get('SECRET_KEY', 'Sk1b1d1R1zz67')
 
 # Application definition
 
