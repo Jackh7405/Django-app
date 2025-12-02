@@ -23,15 +23,26 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 
 # SECURITY WARNING: don't run with debug turned on in production!
-WEBSITE_HOSTNAME = os.environ.get('WEBSITE_HOSTNAME')
+# Determine if running on Azure (WEBSITE_HOSTNAME exists there)
+WEBSITE_HOSTNAME = os.environ.get("WEBSITE_HOSTNAME")
 
-DEBUG = os.environ.get('DEBUG', 'False')
+# Debug should be True locally, False in production unless manually overridden
+if WEBSITE_HOSTNAME:
+    # Running on Azure → production
+    DEBUG = False
+else:
+    # Running locally
+    DEBUG = True
 
+# Allow override with environment variable (optional but useful)
+DEBUG = os.environ.get('DEBUG', str(DEBUG)) == 'True'
+
+# Allowed hosts & CSRF settings
 if DEBUG:
     ALLOWED_HOSTS = ['*', '127.0.0.1', 'localhost']
 else:
     ALLOWED_HOSTS = [WEBSITE_HOSTNAME]
-    CSRF_TRUSTED_ORIGINS = [f'https://{WEBSITE_HOSTNAME}']
+    CSRF_TRUSTED_ORIGINS = [f"https://{WEBSITE_HOSTNAME}"]
 
 
 
