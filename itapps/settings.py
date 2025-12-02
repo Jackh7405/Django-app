@@ -25,27 +25,34 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: don't run with debug turned on in production!
 WEBSITE_HOSTNAME = os.environ.get("WEBSITE_HOSTNAME")
 
-# Detect if running on Azure or locally
+# Detect production vs local
 if WEBSITE_HOSTNAME:
     DEBUG = False
 else:
     DEBUG = True
 
-# Allow manual override (optional)
+# Allow Azure env override
 DEBUG = os.environ.get("DEBUG", str(DEBUG)) == "True"
 
-# Hosts allowed
+# Allowed hosts & CSRF
 if DEBUG:
     ALLOWED_HOSTS = ['*', '127.0.0.1', 'localhost']
 else:
-    ALLOWED_HOSTS = [WEBSITE_HOSTNAME]
-
-    CSRF_TRUSTED_ORIGINS = [
-        f"https://{WEBSITE_HOSTNAME}",
-        f"http://{WEBSITE_HOSTNAME}",   # optional
+    # Fallback to default Azure hostname patterns
+    host = WEBSITE_HOSTNAME or ""
+    
+    ALLOWED_HOSTS = [
+        host,
+        f"{host}".lower(),
     ]
-
-
+    
+    # Add wildcard Azure fallback (auto-matches any app name)
+    ALLOWED_HOSTS.append(".azurewebsites.net")
+    
+    CSRF_TRUSTED_ORIGINS = [
+        f"https://{host}",
+        f"https://*.azurewebsites.net",
+    ]
 
 
 # Security settings
