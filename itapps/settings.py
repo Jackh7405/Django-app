@@ -142,7 +142,7 @@ USE_TZ = True
 #MEDIA_URL = '/media/'
 #MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-AZURE_SA_NAME = os.environ['AZURE_SA_NAME']
+AZURE_SA_NAME = os.environ.get('AZURE_SA_NAME')
 AZURE_SA_KEY = os.environ.get('AZURE_SA_KEY', default='') 
 STORAGES = {
     "default": {
