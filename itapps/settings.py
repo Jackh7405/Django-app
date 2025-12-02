@@ -22,19 +22,29 @@ SECRET_KEY = os.environ.get('SECRET_KEY', 'Sk1b1d1R1zz67')
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
-WEBSITE_HOSTNAME = os.environ.get('WEBSITE_HOSTNAME', None) 
+import os
 
-DEBUG = WEBSITE_HOSTNAME == None 
+DEBUG = os.environ.get("DEBUG", "False").lower() == "true"
 
-if DEBUG: 
+if DEBUG:
 
-    ALLOWED_HOSTS = [] 
+    ALLOWED_HOSTS = ["*", "127.0.0.1", "localhost"]
 
-else: 
+    CSRF_TRUSTED_ORIGINS = [
+        "http://127.0.0.1",
+        "http://localhost",
+    ]
 
-    ALLOWED_HOSTS = [WEBSITE_HOSTNAME] 
+else:
 
-    CSRF_TRUSTED_ORIGINS = [f'https://{WEBSITE_HOSTNAME}'] 
+    ALLOWED_HOSTS = [
+        ".azurewebsites.net",
+        ".azurewebsites.net:443",
+    ]
+
+    CSRF_TRUSTED_ORIGINS = [
+        "https://*.azurewebsites.net",
+    ]
 
 
 
