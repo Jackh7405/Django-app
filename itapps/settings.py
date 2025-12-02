@@ -38,17 +38,15 @@ else:
     ALLOWED_HOSTS = [
         ".azurewebsites.net",
         ".uksouth-01.azurewebsites.net",
+        "c3012334-bngvbycmdefmcrhg.uksouth-01.azurewebsites.net",
+        "c3012334.uksouth-01.azurewebsites.net",
     ]
 
     CSRF_TRUSTED_ORIGINS = [
-        # Standard Azure
         "https://*.azurewebsites.net",
-
-        # Region-specific
         "https://*.uksouth-01.azurewebsites.net",
-
-        # Deep routing host (your real failing one)
         "https://c3012334-bngvbycmdefmcrhg.uksouth-01.azurewebsites.net",
+        "https://c3012334.uksouth-01.azurewebsites.net",
     ]
 
 
