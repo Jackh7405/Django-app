@@ -23,15 +23,20 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 
 # SECURITY WARNING: don't run with debug turned on in production!
-WEBSITE_HOSTNAME = os.environ.get('WEBSITE_HOSTNAME', None)
-DEBUG = WEBSITE_HOSTNAME == None
+WEBSITE_HOSTNAME = os.environ.get('WEBSITE_HOSTNAME')
+
+DEBUG = os.environ.get('DEBUG', 'False')
 
 if DEBUG:
-    ALLOWED_HOSTS = []
+    ALLOWED_HOSTS = ['*', '127.0.0.1', 'localhost']
 else:
     ALLOWED_HOSTS = [WEBSITE_HOSTNAME]
     CSRF_TRUSTED_ORIGINS = [f'https://{WEBSITE_HOSTNAME}']
 
+
+
+# Security settings
+SECRET_KEY = os.environ.get('SECRET_KEY', 'Sk1b1d1R1zz67')
 
 # Application definition
 
@@ -83,9 +88,6 @@ WSGI_APPLICATION = 'itapps.wsgi.application'
 
 
 
-
-# Security settings
-SECRET_KEY = os.environ.get('SECRET_KEY', 'Sk1b1d1R1zz67')
 
 
 # Database configuration
