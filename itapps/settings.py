@@ -190,3 +190,8 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 LOGIN_REDIRECT_URL = 'itreporting:home'
 LOGIN_URL = 'login'
 
+# Azure/Proxy specific settings for production
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+USE_X_FORWARDED_HOST = True
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
