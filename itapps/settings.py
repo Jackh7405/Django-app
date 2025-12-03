@@ -113,8 +113,16 @@ DATABASES = {
         'PASSWORD': os.environ.get('AZURE_DB_PASSWORD'),
         'HOST': os.environ.get('AZURE_DB_HOST'),
         'PORT': os.environ.get('AZURE_DB_PORT', '3306'),
+
+        'OPTIONS': {
+            'ssl': {
+                'verify_server_cert': False
+            }
+        }
     }
 }
+
+
 
 
 
