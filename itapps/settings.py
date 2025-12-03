@@ -112,18 +112,22 @@ DATABASES = {
         'USER': os.environ.get('AZURE_DB_USER'),
         'PASSWORD': os.environ.get('AZURE_DB_PASSWORD'),
         'HOST': os.environ.get('AZURE_DB_HOST'),
-        'PORT': os.environ.get('AZURE_DB_PORT', '3306'),
-
-        'OPTIONS': {
-            'ssl': {
-                'verify_server_cert': False
-            }
-        }
+        'PORT': os.environ.get('AZURE_DB_PORT', '3306'), 
+        
     }
 }
 
-
-
+# ────────────────────────────────
+# Azure MySQL SSL Fix (automatic)
+# ────────────────────────────────
+# This block runs ONLY when deployed to Azure App Service
+if os.environ.get('WEBSITE_SITE_NAME'):  # Azure sets this env var automatically
+    DATABASES['default']['OPTIONS'] = {
+        'ssl': {
+            'ca': '/etc/ssl/certs/BaltimoreCyberTrustRoot.pem'
+        }
+        # 'ssl_mode': 'REQUIRED'   # optional – works fine without it too
+    }
 
 
 
