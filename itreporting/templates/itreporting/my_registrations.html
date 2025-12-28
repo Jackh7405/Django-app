@@ -1,0 +1,71 @@
+{% extends "itreporting/base.html" %}
+{% block content %}
+<div class="content-section">
+    <h1 class="mb-4">My Module Registrations</h1>
+    
+    {% if student.course %}
+        <div class="alert alert-info mb-4">
+            <strong>Your Course:</strong> {{ student.course.name }}
+        </div>
+    {% endif %}
+    
+    {% if registrations %}
+        <p class="lead">You are currently registered for <strong>{{ registrations.count }}</strong> module{% if registrations.count != 1 %}s{% endif %}.</p>
+        
+        <div class="row">
+            {% for registration in registrations %}
+                <div class="col-md-6 mb-4">
+                    <div class="card h-100">
+                        <div class="card-header">
+                            <h5 class="mb-0">{{ registration.module.code }} - {{ registration.module.name }}</h5>
+                        </div>
+                        <div class="card-body">
+                            <p><strong>Category:</strong> {{ registration.module.get_category_display }}</p>
+                            <p><strong>Credits:</strong> {{ registration.module.credit }}</p>
+                            <p><strong>Registered on:</strong> {{ registration.date_registered|date:"F d, Y" }}</p>
+                            <p class="mb-3">{{ registration.module.description|truncatewords:20 }}</p>
+                            
+                            <div class="d-flex gap-2">
+                                <a href="{% url 'itreporting:module-detail' registration.module.code %}" 
+                                   class="btn btn-sm btn-outline-primary">
+                                    <i class="bi bi-eye"></i> View Details
+                                </a>
+                                
+                                <form method="post" 
+                                      action="{% url 'itreporting:module-unregister' registration.module.code %}" 
+                                      class="d-inline"
+                                      onsubmit="return confirm('Are you sure you want to unregister from {{ registration.module.code }}?');">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-sm btn-danger">
+                                        <i class="bi bi-x-circle"></i> Unregister
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="card-footer text-muted small">
+                            <i class="bi bi-people"></i> {{ registration.module.get_registered_students_count }} student{% if registration.module.get_registered_students_count != 1 %}s{% endif %} registered
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="alert alert-warning">
+            <h4><i class="bi bi-exclamation-triangle"></i> No Registrations Yet</h4>
+            <p>You haven't registered for any modules yet.</p>
+            <a href="{% url 'itreporting:module-list' %}" class="btn btn-primary">
+                <i class="bi bi-book"></i> Browse Available Modules
+            </a>
+        </div>
+    {% endif %}
+    
+    <div class="mt-4">
+        <a href="{% url 'itreporting:module-list' %}" class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-left"></i> Back to Modules
+        </a>
+        <a href="{% url 'profile' %}" class="btn btn-outline-info">
+            <i class="bi bi-person"></i> View Profile
+        </a>
+    </div>
+</div>
+{% endblock content %}

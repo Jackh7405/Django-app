@@ -10,12 +10,14 @@ urlpatterns = [
     path('about/', views.about, name='about'),
     path('contact/', views.contact, name='contact'),
     
-    # Module pages (new for Module Registration System)
+    # Module pages
     path('modules/', views.ModuleListView.as_view(), name='module-list'),
     path('modules/<str:code>/', views.ModuleDetailView.as_view(), name='module-detail'),
     
-    # We'll add more URLs as we build:
-    # - Course-specific module lists
-    # - Registration/unregistration endpoints
-    # - My Registrations page
+    # Registration endpoints
+    path('modules/<str:code>/register/', views.register_module, name='module-register'),
+    path('modules/<str:code>/unregister/', views.unregister_module, name='module-unregister'),
+    
+    # My Registrations page
+    path('my-registrations/', views.my_registrations, name='my-registrations'),
 ]
