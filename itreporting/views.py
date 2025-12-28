@@ -2,80 +2,69 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
-from .models import Issue
+from .models import Module  # Only import Module now
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic.edit import DeleteView
 from django.shortcuts import render, get_object_or_404
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 
-# Create your views here.
+# ============================================================================
+# BASIC PAGES (Home, About, Contact)
+# ============================================================================
+
 def home(request):
-    return render(request, 'itreporting/home.html', {'title': 'Welcome'})
+    """Home page - landing page for the application"""
+    context = {
+        'title': 'Welcome',
+        'courses': Group.objects.all()  # Show list of courses on home
+    }
+    return render(request, 'itreporting/home.html', context)
 
-def contact(request):
-    return render(request, 'itreporting/contact.html', {'title': 'Welcome'})
 
 def about(request):
-    return render(request, 'itreporting/about.html', {'title': 'Welcome'})
-def report(request):
-    daily_report = {'issues': Issue.objects.all(), 'title': 'IssuesReported'}
-    return render(request, 'itreporting/report.html', daily_report)
-class PostListView(ListView):
-    model = Issue
-    ordering = ['-date_submitted']
-    template_name = 'itreporting/report.html'
-    context_object_name = 'issues'
-    paginate_by = 5  # Optional pagination
-class UserPostListView(ListView): 
-
-    model = Issue
-    template_name = 'itreporting/user_issues.html'
-    context_object_name = 'issues'
-    paginate_by = 5
+    """About Us page"""
+    return render(request, 'itreporting/about.html', {'title': 'About Us'})
 
 
-    def get_queryset(self):
-
-        user=get_object_or_404(User, username=self.kwargs.get('username'))
-
-        return Issue.objects.filter(author=user).order_by('-date_submitted')
-
-class PostDetailView(DetailView):
-    model = Issue
-    template_name = 'itreporting/issue_detail.html'
-class PostCreateView(LoginRequiredMixin, CreateView):
-
-    model = Issue
-    fields = ['type', 'room', 'urgent', 'details']
-
-    def form_valid(self, form): 
-
-        form.instance.author = self.request.user
-        return super().form_valid(form)
-    
-class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView): 
-
-    model = Issue
-
-    fields = ['type', 'room', 'details']
-    
-    def test_func(self):
-
-        issue = self.get_object()
-
-        return self.request.user == issue.author
-class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
-
-    model = Issue
-
-    success_url = '/report'
-    
-    def test_func(self):
-
-        issue = self.get_object()
-
-        return self.request.user == issue.author
+def contact(request):
+    """Contact Us page"""
+    return render(request, 'itreporting/contact.html', {'title': 'Contact Us'})
 
 
+# ============================================================================
+# MODULE VIEWS (New - for Module Registration System)
+# ============================================================================
+
+class ModuleListView(ListView):
+    """
+    Display list of all modules
+    Later we can filter by course
+    """
+    model = Module
+    template_name = 'itreporting/module_list.html'
+    context_object_name = 'modules'
+    ordering = ['code']
+    paginate_by = 10  # Pagination requirement
 
 
+class ModuleDetailView(DetailView):
+    """
+    Display details of a single module
+    Students can register/unregister from this page
+    """
+    model = Module
+    template_name = 'itreporting/module_detail.html'
+    # We'll use 'code' instead of 'pk' in URLs (intermediate requirement)
+    slug_field = 'code'
+    slug_url_kwarg = 'code'
+
+
+# ============================================================================
+# PLACEHOLDER VIEWS (We'll build these step by step)
+# ============================================================================
+
+# We'll add these views as we progress:
+# - Student registration view
+# - Module registration/unregistration views
+# - My Registrations view
+# - Course-specific module list view
