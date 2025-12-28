@@ -1,7 +1,224 @@
 {% extends "itreporting/base.html" %}
-    {% block content %}
-    <body>
-        <h1>Welcome to the about us page</h1>
-    </body>
-    {% endblock content %}
+{% load static %}
+{% block content %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>About Us</title>
+    <style>
+        .section-link {
+            scroll-margin-top: 100px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Page Header -->
+    <div class="mb-4">
+        <h1>About Sheffield Hallam University</h1>
+        <p class="lead">
+            Discover our mission, values, and commitment to providing world-class education 
+            through innovative module registration and student support services.
+        </p>
+    </div>
+
+    <!-- Internal Navigation -->
+    <nav class="mb-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Quick Navigation</h5>
+                <div class="d-flex flex-wrap gap-2">
+                    <a href="#mission" class="btn btn-sm btn-outline-primary">Our Mission</a>
+                    <a href="#history" class="btn btn-sm btn-outline-primary">Our History</a>
+                    <a href="#services" class="btn btn-sm btn-outline-primary">Our Services</a>
+                    <a href="#stats" class="btn btn-sm btn-outline-primary">Statistics</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Section 1: Our Mission -->
+    <section id="mission" class="content-section mb-5 section-link">
+        <div class="row">
+            <div class="col-md-8">
+                <h2 class="mb-3">Our Mission</h2>
+                <p>
+                    Sheffield Hallam University is committed to providing exceptional education and support 
+                    to students from all backgrounds. Our Module Registration System is designed to make 
+                    the student experience as smooth and efficient as possible.
+                </p>
+                <p>
+                    We believe in empowering students to take control of their academic journey by providing 
+                    them with intuitive tools to browse, select, and register for modules that align with 
+                    their career goals and personal interests.
+                </p>
+                <div class="alert alert-info">
+                    <strong>Our Vision:</strong> To be a leading institution in student-centered technology 
+                    and innovative learning solutions.
+                </div>
+            </div>
+            <div class="col-md-4">
+                <img src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=400&h=300&fit=crop" 
+                     class="img-fluid rounded shadow" 
+                     alt="Students studying">
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 2: Our History -->
+    <section id="history" class="content-section mb-5 section-link">
+        <div class="row">
+            <div class="col-md-4">
+                <img src="https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=400&h=300&fit=crop" 
+                     class="img-fluid rounded shadow" 
+                     alt="University building">
+            </div>
+            <div class="col-md-8">
+                <h2 class="mb-3">Our History</h2>
+                <p>
+                    Sheffield Hallam University has a rich history dating back to 1843, when the Sheffield 
+                    School of Design was founded. Over the years, we have evolved to become one of the UK's 
+                    leading modern universities.
+                </p>
+                <h4 class="mt-4">Key Milestones</h4>
+                <ul class="list-unstyled">
+                    <li class="mb-2">
+                        <strong>1843:</strong> Founded as Sheffield School of Design
+                    </li>
+                    <li class="mb-2">
+                        <strong>1969:</strong> Became Sheffield Polytechnic
+                    </li>
+                    <li class="mb-2">
+                        <strong>1992:</strong> Granted university status as Sheffield Hallam University
+                    </li>
+                    <li class="mb-2">
+                        <strong>2020:</strong> Launched innovative digital module registration system
+                    </li>
+                    <li class="mb-2">
+                        <strong>2025:</strong> Serving over 30,000 students across diverse disciplines
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 3: Our Services -->
+    <section id="services" class="content-section mb-5 section-link">
+        <h2 class="mb-4">Our Services</h2>
+        <p class="mb-4">
+            The Student IT Services department provides comprehensive support for all your academic 
+            technology needs. Our Module Registration System is just one of many services we offer.
+        </p>
+        
+        <div class="row">
+            <div class="col-md-4 mb-3">
+                <div class="card h-100">
+                    <img src="https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=400&h=250&fit=crop" 
+                         class="card-img-top" 
+                         alt="Module Registration">
+                    <div class="card-body">
+                        <h5 class="card-title">Module Registration</h5>
+                        <p class="card-text">
+                            Browse and register for modules across all courses. View module details, 
+                            prerequisites, and manage your academic schedule.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4 mb-3">
+                <div class="card h-100">
+                    <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=400&h=250&fit=crop" 
+                         class="card-img-top" 
+                         alt="Academic Support">
+                    <div class="card-body">
+                        <h5 class="card-title">Academic Support</h5>
+                        <p class="card-text">
+                            Access academic advisors, course coordinators, and module tutors for 
+                            personalized guidance on your academic journey.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4 mb-3">
+                <div class="card h-100">
+                    <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?w=400&h=250&fit=crop" 
+                         class="card-img-top" 
+                         alt="IT Support">
+                    <div class="card-body">
+                        <h5 class="card-title">IT Support</h5>
+                        <p class="card-text">
+                            Technical support for all university systems, including email, learning 
+                            platforms, and student portals.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 4: Statistics & Facts -->
+    <section id="stats" class="content-section mb-5 section-link">
+        <h2 class="mb-4">Sheffield Hallam by Numbers</h2>
+        <p class="mb-4">
+            Here are some facts and figures about our university and student community:
+        </p>
+        
+        <div class="row text-center">
+            <div class="col-md-3 mb-4">
+                <div class="card bg-primary text-white h-100">
+                    <div class="card-body">
+                        <h1 class="display-4">30,000+</h1>
+                        <p class="lead">Students</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-3 mb-4">
+                <div class="card bg-success text-white h-100">
+                    <div class="card-body">
+                        <h1 class="display-4">700+</h1>
+                        <p class="lead">Courses</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-3 mb-4">
+                <div class="card bg-info text-white h-100">
+                    <div class="card-body">
+                        <h1 class="display-4">120+</h1>
+                        <p class="lead">Countries</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-3 mb-4">
+                <div class="card bg-warning text-dark h-100">
+                    <div class="card-body">
+                        <h1 class="display-4">4,000+</h1>
+                        <p class="lead">Staff</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="alert alert-success mt-4">
+            <h4>Our Commitment</h4>
+            <p class="mb-0">
+                We are dedicated to providing a supportive, inclusive learning environment where 
+                every student can achieve their full potential. Our Module Registration System 
+                reflects this commitment through its user-friendly design and comprehensive features.
+            </p>
+        </div>
+    </section>
+
+    <!-- Call to Action -->
+    <div class="text-center mt-5 mb-4">
+        <h3>Ready to Get Started?</h3>
+        <p class="lead">Browse our available modules and begin your registration today.</p>
+        <a href="{% url 'itreporting:module-list' %}" class="btn btn-primary btn-lg me-2">View Modules</a>
+        <a href="{% url 'itreporting:contact' %}" class="btn btn-outline-secondary btn-lg">Contact Us</a>
+    </div>
+</body>
 </html>
+{% endblock content %}

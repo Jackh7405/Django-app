@@ -1,12 +1,13 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
-from .models import Module  # Only import Module now
+from .models import Module, Registration
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic.edit import DeleteView
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.models import User, Group
+from django.contrib import messages
 
 # ============================================================================
 # BASIC PAGES (Home, About, Contact)
@@ -27,7 +28,22 @@ def about(request):
 
 
 def contact(request):
-    """Contact Us page"""
+    """Contact Us page with form handling"""
+    if request.method == 'POST':
+        # Get form data
+        name = request.POST.get('name')
+        email = request.POST.get('email')
+        subject = request.POST.get('subject')
+        message = request.POST.get('message')
+        
+        # For now, just show success message
+        # We'll implement email sending in the Intermediate Requirements
+        messages.success(
+            request, 
+            f'Thank you {name}! Your message has been received. We will respond to {email} shortly.'
+        )
+        return redirect('itreporting:contact')
+    
     return render(request, 'itreporting/contact.html', {'title': 'Contact Us'})
 
 

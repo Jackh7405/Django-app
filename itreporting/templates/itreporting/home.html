@@ -1,7 +1,235 @@
 {% extends "itreporting/base.html" %}
-    {% block content %}
-    <body>
-        <h1>Welcome to the homepage</h1>
-    </body>
-    {% endblock content %}
+{% load static %}
+{% block content %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Home - Module Registration System</title>
+    <style>
+        .hero-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 60px 0;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+        .feature-icon {
+            font-size: 3rem;
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+        .course-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .course-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body>
+    <!-- Section 1: Hero/Welcome Section -->
+    <section class="hero-section text-center">
+        <div class="container">
+            <h1 class="display-3 fw-bold mb-3">Welcome to Sheffield Hallam University</h1>
+            <p class="lead fs-4 mb-4">
+                Your gateway to academic excellence through our innovative Module Registration System
+            </p>
+            <p class="mb-4">
+                Browse hundreds of modules, register for your courses, and manage your academic journey 
+                all in one place.
+            </p>
+            <div class="d-flex justify-content-center gap-3">
+                <a href="{% url 'itreporting:module-list' %}" class="btn btn-light btn-lg">
+                    Browse Modules
+                </a>
+                {% if not user.is_authenticated %}
+                    <a href="{% url 'register' %}" class="btn btn-outline-light btn-lg">
+                        Register Now
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 2: Available Courses -->
+    <section class="mb-5">
+        <div class="text-center mb-4">
+            <h2 class="display-5 fw-bold">Our Courses</h2>
+            <p class="lead text-muted">
+                Choose from our diverse range of undergraduate and postgraduate programs
+            </p>
+        </div>
+        
+        {% if courses %}
+            <div class="row">
+                {% for course in courses %}
+                    <div class="col-md-4 mb-4">
+                        <div class="card course-card h-100 shadow-sm">
+                            <div class="card-body text-center">
+                                <div class="feature-icon">
+                                    <i class="bi bi-mortarboard"></i>
+                                </div>
+                                <h3 class="card-title">{{ course.name }}</h3>
+                                <p class="card-text text-muted">
+                                    Explore cutting-edge modules designed to prepare you for success in {{ course.name }}.
+                                </p>
+                                <a href="{% url 'itreporting:module-list' %}" class="btn btn-primary">
+                                    View Modules
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="alert alert-info text-center">
+                <p class="mb-0">No courses available at the moment. Please check back later.</p>
+            </div>
+        {% endif %}
+    </section>
+
+    <!-- Section 3: Key Features -->
+    <section class="mb-5">
+        <div class="text-center mb-4">
+            <h2 class="display-5 fw-bold">Why Choose Our System?</h2>
+            <p class="lead text-muted">
+                Experience seamless module registration with these powerful features
+            </p>
+        </div>
+        
+        <div class="row">
+            <div class="col-md-3 mb-4">
+                <div class="card h-100 border-0 shadow-sm text-center p-4">
+                    <img src="https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=300&h=200&fit=crop" 
+                         class="card-img-top rounded mb-3" 
+                         alt="Easy browsing">
+                    <div class="card-body">
+                        <h4>Easy Browsing</h4>
+                        <p class="text-muted">
+                            Search and filter modules by course, category, and availability.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-3 mb-4">
+                <div class="card h-100 border-0 shadow-sm text-center p-4">
+                    <img src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=300&h=200&fit=crop" 
+                         class="card-img-top rounded mb-3" 
+                         alt="Quick registration">
+                    <div class="card-body">
+                        <h4>Quick Registration</h4>
+                        <p class="text-muted">
+                            Register for modules with just one click and manage your schedule.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-3 mb-4">
+                <div class="card h-100 border-0 shadow-sm text-center p-4">
+                    <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?w=300&h=200&fit=crop" 
+                         class="card-img-top rounded mb-3" 
+                         alt="Real-time updates">
+                    <div class="card-body">
+                        <h4>Real-time Updates</h4>
+                        <p class="text-muted">
+                            See module availability and registration status instantly.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-3 mb-4">
+                <div class="card h-100 border-0 shadow-sm text-center p-4">
+                    <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=300&h=200&fit=crop" 
+                         class="card-img-top rounded mb-3" 
+                         alt="Support">
+                    <div class="card-body">
+                        <h4>24/7 Support</h4>
+                        <p class="text-muted">
+                            Get help whenever you need it through our support system.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 4: Quick Stats & Call to Action -->
+    <section class="mb-5">
+        <div class="card bg-light border-0">
+            <div class="card-body p-5">
+                <div class="row align-items-center">
+                    <div class="col-md-6 mb-4 mb-md-0">
+                        <h2 class="display-6 fw-bold mb-3">Start Your Journey Today</h2>
+                        <p class="lead mb-4">
+                            Join thousands of students who have successfully registered for their modules 
+                            using our intuitive system.
+                        </p>
+                        <div class="row text-center mb-4">
+                            <div class="col-4">
+                                <h3 class="fw-bold text-primary">{{ modules_count|default:"700+" }}</h3>
+                                <p class="text-muted small">Modules</p>
+                            </div>
+                            <div class="col-4">
+                                <h3 class="fw-bold text-success">{{ students_count|default:"30K+" }}</h3>
+                                <p class="text-muted small">Students</p>
+                            </div>
+                            <div class="col-4">
+                                <h3 class="fw-bold text-info">{{ courses_count|default:courses.count }}</h3>
+                                <p class="text-muted small">Courses</p>
+                            </div>
+                        </div>
+                        {% if user.is_authenticated %}
+                            <a href="{% url 'itreporting:module-list' %}" class="btn btn-primary btn-lg">
+                                Browse Modules Now
+                            </a>
+                        {% else %}
+                            <a href="{% url 'register' %}" class="btn btn-primary btn-lg me-2">
+                                Create Account
+                            </a>
+                            <a href="{% url 'login' %}" class="btn btn-outline-primary btn-lg">
+                                Login
+                            </a>
+                        {% endif %}
+                    </div>
+                    <div class="col-md-6">
+                        <img src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=600&h=400&fit=crop" 
+                             class="img-fluid rounded shadow" 
+                             alt="Students collaborating">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Additional Info -->
+    <div class="row text-center mt-5">
+        <div class="col-md-4 mb-3">
+            <h5>Need Help?</h5>
+            <p class="text-muted">
+                Visit our <a href="{% url 'itreporting:about' %}">About page</a> to learn more about our services.
+            </p>
+        </div>
+        <div class="col-md-4 mb-3">
+            <h5>Have Questions?</h5>
+            <p class="text-muted">
+                <a href="{% url 'itreporting:contact' %}">Contact us</a> and our team will assist you.
+            </p>
+        </div>
+        <div class="col-md-4 mb-3">
+            <h5>View Your Profile</h5>
+            <p class="text-muted">
+                {% if user.is_authenticated %}
+                    <a href="{% url 'profile' %}">Manage your profile</a> and update your information.
+                {% else %}
+                    <a href="{% url 'login' %}">Login</a> to access your profile.
+                {% endif %}
+            </p>
+        </div>
+    </div>
+</body>
 </html>
+{% endblock content %}
