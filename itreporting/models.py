@@ -3,6 +3,9 @@ from django.utils import timezone
 from django.contrib.auth.models import User, Group
 from django.urls import reverse
 
+# Import Student model from users app
+from users.models import Student
+
 # ============================================================================
 # MODULE MODEL - For Module Registration System
 # ============================================================================
@@ -23,7 +26,7 @@ class Module(models.Model):
     code = models.CharField(
         max_length=20, 
         unique=True,  # IMPORTANT: This makes the code unique for use in URLs
-        help_text="Unique module code (e.g., 55-123456)"
+        help_text="Unique module code (e.g., 55-606366)"
     )
     credit = models.IntegerField(
         default=20,
@@ -77,26 +80,58 @@ class Module(models.Model):
     def get_registered_students_count(self):
         """Returns count of students registered for this module"""
         return self.registrations.count()
+    
+    def get_registered_students(self):
+        """Returns all students registered for this module"""
+        return Student.objects.filter(registrations__module=self)
 
 
 # ============================================================================
-# KEEP YOUR EXISTING ISSUE MODEL (for reference/backward compatibility)
+# REGISTRATION MODEL - Links Students to Modules
 # ============================================================================
-#class Issue(models.Model):
-#    """
-#    Original IT Issue model - keeping for reference
-#    You can delete this later if not needed
-#    """
-#    type = models.CharField(max_length=100, choices=[('Hardware', 'Hardware'), ('Software', 'Software')])
-#    room = models.CharField(max_length=100)
-#    urgent = models.BooleanField(default=False)
-#    details = models.TextField()
-#    date_submitted = models.DateTimeField(default=timezone.now)
-#    description = models.TextField()
-#    author = models.ForeignKey(User, related_name='issues', on_delete=models.CASCADE)
+class Registration(models.Model):
+    """
+    Represents a student's registration to a module.
+    This is the many-to-many relationship between Student and Module.
+    """
     
-#    def __str__(self):
-#        return f'{self.type} Issue in {self.room}'
+    # The student who registered
+    student = models.ForeignKey(
+        Student,
+        on_delete=models.CASCADE,
+        related_name='registrations',
+        help_text="The student who registered for this module"
+    )
     
-#    def get_absolute_url(self):
-#        return reverse('itreporting:issue-detail', kwargs={'pk': self.pk})Q
+    # The module being registered for
+    module = models.ForeignKey(
+        Module,
+        on_delete=models.CASCADE,
+        related_name='registrations',
+        help_text="The module being registered for"
+    )
+    
+    # Date when registration occurred
+    date_registered = models.DateTimeField(
+        auto_now_add=True,
+        help_text="When the student registered for this module"
+    )
+    
+    class Meta:
+        # Ensure a student can only register once per module
+        unique_together = ['student', 'module']
+        ordering = ['-date_registered']  # Most recent first
+        verbose_name = 'Registration'
+        verbose_name_plural = 'Registrations'
+    
+    def __str__(self):
+        """Returns meaningful text representation"""
+        return f"{self.student} registered for {self.module.code}"
+    
+    def get_student_name(self):
+        """Helper method to get student name"""
+        return self.student.get_full_name()
+    
+    def get_module_name(self):
+        """Helper method to get module name"""
+        return self.module.name
