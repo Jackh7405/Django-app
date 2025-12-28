@@ -1,10 +1,13 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from .forms import UserRegisterForm, UserUpdateForm, ProfileUpdateForm
+from .forms import UserRegisterForm, UserUpdateForm, StudentUpdateForm
 from django.contrib.auth.decorators import login_required
 
-# Create your views here.
+# ============================================================================
+# USER REGISTRATION
+# ============================================================================
 def register(request):
+    """Handle user registration"""
     if request.method == 'POST':
         form = UserRegisterForm(request.POST)
         if form.is_valid():
@@ -16,22 +19,35 @@ def register(request):
             messages.warning(request, 'Unable to create account')
     else:
         form = UserRegisterForm()
-    return render(request, 'users/register.html', {'form': form, 'title': 'Student Registration'})    
+    return render(request, 'users/register.html', {'form': form, 'title': 'Student Registration'})
 
+
+# ============================================================================
+# USER PROFILE
+# ============================================================================
 @login_required
 def profile(request):
-
+    """Display and update user profile"""
     if request.method == 'POST':
         u_form = UserUpdateForm(request.POST, instance=request.user)
-        p_form= ProfileUpdateForm(request.POST, request.FILES,
-        instance=request.user.profile)
-        if u_form.is_valid() and p_form.is_valid():
+        s_form = StudentUpdateForm(
+            request.POST, 
+            request.FILES,
+            instance=request.user.student
+        )
+        
+        if u_form.is_valid() and s_form.is_valid():
             u_form.save()
-            p_form.save()
-            messages.success(request, 'Your account has been successfully updated!')
+            s_form.save()
+            messages.success(request, 'Your profile has been successfully updated!')
             return redirect('profile')
     else:
-        u_form = UserUpdateForm(instance = request.user)
-        p_form = ProfileUpdateForm(instance = request.user.profile)
-        context = {'u_form': u_form, 'p_form': p_form, 'title': 'Student Profile'}
-        return render(request, 'users/profile.html', context)
+        u_form = UserUpdateForm(instance=request.user)
+        s_form = StudentUpdateForm(instance=request.user.student)
+    
+    context = {
+        'u_form': u_form, 
+        's_form': s_form, 
+        'title': 'Student Profile'
+    }
+    return render(request, 'users/profile.html', context)

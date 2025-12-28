@@ -1,31 +1,95 @@
 {% extends "itreporting/base.html" %}
 {% load crispy_forms_tags %}
 {% block content %}
-
-<div class="content-section"> 
-
-  <div class="media"> 
-
-   <p>
-{% if user.profile.image %}
-  <img class="rounded-circle account-img" src="{{ user.profile.image.url }}">
-{% else %}
-  <img class="rounded-circle account-img" src="profile_pics/default_NaJsQnJ.png">
-{% endif %}
-<form method="POST" enctype="multipart/form-data">
-	{% csrf_token %}
-	<fieldset class="form-group">
-	<legend class="border-bottom mb-4">Student IT Services - Profile
-	Details</legend>
-	{{ u_form | crispy }}
-	{{ p_form | crispy }}
-	</fieldset>
-	<div class="form-group">
-		<button class="btn btn-outline-info" type="submit">Update</button>
-	</div>
-</form>
-  </div> 
-
-</div> 
-
+<div class="content-section">
+    <div class="media mb-4">
+        <!-- Display student photo -->
+        <div class="me-3">
+            {% if user.student.photo %}
+                <img class="rounded-circle account-img" src="{{ user.student.photo.url }}" width="100" height="100" alt="Profile Photo">
+            {% else %}
+                <img class="rounded-circle account-img" src="https://via.placeholder.com/100" width="100" height="100" alt="Default Photo">
+            {% endif %}
+        </div>
+        <div class="media-body">
+            <h2 class="account-heading">{{ user.get_full_name|default:user.username }}</h2>
+            <p class="text-secondary">{{ user.email }}</p>
+            {% if user.student.course %}
+                <p class="text-muted"><strong>Course:</strong> {{ user.student.course.name }}</p>
+            {% endif %}
+        </div>
+    </div>
+    
+    <!-- Display all student information -->
+    <div class="card mb-4">
+        <div class="card-header">
+            <h4>Student Information</h4>
+        </div>
+        <div class="card-body">
+            <div class="row mb-2">
+                <div class="col-md-4"><strong>Username:</strong></div>
+                <div class="col-md-8">{{ user.username }}</div>
+            </div>
+            <div class="row mb-2">
+                <div class="col-md-4"><strong>Full Name:</strong></div>
+                <div class="col-md-8">{{ user.first_name }} {{ user.last_name }}</div>
+            </div>
+            <div class="row mb-2">
+                <div class="col-md-4"><strong>Email:</strong></div>
+                <div class="col-md-8">{{ user.email }}</div>
+            </div>
+            {% if user.student.date_of_birth %}
+            <div class="row mb-2">
+                <div class="col-md-4"><strong>Date of Birth:</strong></div>
+                <div class="col-md-8">{{ user.student.date_of_birth }}</div>
+            </div>
+            {% endif %}
+            {% if user.student.address %}
+            <div class="row mb-2">
+                <div class="col-md-4"><strong>Address:</strong></div>
+                <div class="col-md-8">{{ user.student.address }}</div>
+            </div>
+            {% endif %}
+            {% if user.student.city %}
+            <div class="row mb-2">
+                <div class="col-md-4"><strong>City:</strong></div>
+                <div class="col-md-8">{{ user.student.city }}</div>
+            </div>
+            {% endif %}
+            {% if user.student.country %}
+            <div class="row mb-2">
+                <div class="col-md-4"><strong>Country:</strong></div>
+                <div class="col-md-8">{{ user.student.country }}</div>
+            </div>
+            {% endif %}
+            {% if user.student.course %}
+            <div class="row mb-2">
+                <div class="col-md-4"><strong>Enrolled Course:</strong></div>
+                <div class="col-md-8">{{ user.student.course.name }}</div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    
+    <!-- Update Profile Form -->
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <fieldset class="form-group">
+            <legend class="border-bottom mb-4">Update Profile</legend>
+            
+            <!-- User Information Form -->
+            <h5>Account Information</h5>
+            {{ u_form|crispy }}
+            
+            <hr class="my-4">
+            
+            <!-- Student Information Form -->
+            <h5>Personal & Academic Information</h5>
+            {{ s_form|crispy }}
+        </fieldset>
+        <div class="form-group">
+            <button class="btn btn-outline-info" type="submit">Update</button>
+        </div>
+    </form>
+</div>
 {% endblock content %}
