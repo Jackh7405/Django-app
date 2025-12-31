@@ -29,7 +29,7 @@ def about(request):
 
 
 def contact(request):
-    """Contact Us page with form handling"""
+    """Contact Us page with form handling and email sending"""
     if request.method == 'POST':
         # Get form data
         name = request.POST.get('name')
@@ -37,12 +37,54 @@ def contact(request):
         subject = request.POST.get('subject')
         message = request.POST.get('message')
         
-        # For now, just show success message
-        # We'll implement email sending in the Intermediate Requirements
-        messages.success(
-            request, 
-            f'Thank you {name}! Your message has been received. We will respond to {email} shortly.'
-        )
+        # Validate form data
+        if not all([name, email, subject, message]):
+            messages.error(request, 'Please fill in all required fields.')
+            return redirect('itreporting:contact')
+        
+        try:
+            # Prepare email content
+            email_subject = f'Contact Form: {subject}'
+            email_message = f"""
+New contact form submission from Sheffield Hallam Module Registration System
+
+From: {name}
+Email: {email}
+Subject: {subject}
+
+Message:
+{message}
+
+---
+This email was sent from the Module Registration System contact form.
+Reply directly to: {email}
+            """
+            
+            # Send email
+            from django.core.mail import send_mail
+            from django.conf import settings
+            
+            send_mail(
+                subject=email_subject,
+                message=email_message,
+                from_email=settings.DEFAULT_FROM_EMAIL,
+                recipient_list=[settings.CONTACT_EMAIL],
+                fail_silently=False,  # Raise exception if sending fails
+            )
+            
+            messages.success(
+                request, 
+                f'Thank you {name}! Your message has been sent successfully. We will respond to {email} shortly.'
+            )
+            
+        except Exception as e:
+            # If email sending fails, show error but don't crash
+            messages.error(
+                request,
+                f'Sorry, there was an error sending your message. Please try again later or email us directly at itservices@shu.ac.uk'
+            )
+            print(f"Email sending error: {e}")  # Log the error
+        
         return redirect('itreporting:contact')
     
     return render(request, 'itreporting/contact.html', {'title': 'Contact Us'})
