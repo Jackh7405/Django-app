@@ -189,8 +189,6 @@ STORAGES = {
     }
 STATIC_URL = f'https://{AZURE_SA_NAME}.blob.core.windows.net/static/'
 MEDIA_URL = f'https://{AZURE_SA_NAME}.blob.core.windows.net/media/'
-# Default primary key field type
-# https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
@@ -200,35 +198,23 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 LOGIN_REDIRECT_URL = 'itreporting:home'
 LOGIN_URL = 'login'
 
-# Azure/Proxy specific settings for production
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 USE_X_FORWARDED_HOST = True
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
 
-# ============================================================================
-# EMAIL CONFIGURATION
-# ============================================================================
-
-# Email backend configuration
 if DEBUG:
-    # For development/testing - prints emails to console (NO PASSWORD NEEDED)
     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 else:
-    # For production - actually sends emails
     EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
-# Gmail SMTP Configuration (only used in production when DEBUG=False)
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 
-# Get credentials from environment variables (NOT hardcoded!)
 EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER', 'jack.haston103@gmail.com')
-EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', '')  # Empty - will be set in Azure
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', '')  
 
-# Default from email
 DEFAULT_FROM_EMAIL = 'jack.haston103@gmail.com'
 
-# Email for contact form submissions (where form submissions go)
 CONTACT_EMAIL = 'jack.haston103@gmail.com'

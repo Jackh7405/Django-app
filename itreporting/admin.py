@@ -1,9 +1,6 @@
 from django.contrib import admin
 from .models import Module, Registration
 
-# ============================================================================
-# MODULE ADMIN CONFIGURATION
-# ============================================================================
 @admin.register(Module)
 class ModuleAdmin(admin.ModelAdmin):
     """
@@ -12,7 +9,7 @@ class ModuleAdmin(admin.ModelAdmin):
     list_display = ['code', 'name', 'credit', 'category', 'availability', 'get_courses_display', 'get_registration_count']
     list_filter = ['category', 'availability', 'courses_allowed']
     search_fields = ['code', 'name', 'description']
-    filter_horizontal = ['courses_allowed']  # Better UI for many-to-many fields
+    filter_horizontal = ['courses_allowed']
     
     fieldsets = (
         ('Basic Information', {
@@ -41,9 +38,6 @@ class ModuleAdmin(admin.ModelAdmin):
     get_registration_count.short_description = 'Registrations'
 
 
-# ============================================================================
-# REGISTRATION ADMIN CONFIGURATION
-# ============================================================================
 @admin.register(Registration)
 class RegistrationAdmin(admin.ModelAdmin):
     """

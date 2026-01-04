@@ -3,11 +3,7 @@ from django.contrib import messages
 from .forms import UserRegisterForm, UserUpdateForm, StudentUpdateForm
 from django.contrib.auth.decorators import login_required
 
-# ============================================================================
-# USER REGISTRATION
-# ============================================================================
 def register(request):
-    """Handle user registration"""
     if request.method == 'POST':
         form = UserRegisterForm(request.POST)
         if form.is_valid():
@@ -22,12 +18,8 @@ def register(request):
     return render(request, 'users/register.html', {'form': form, 'title': 'Student Registration'})
 
 
-# ============================================================================
-# USER PROFILE
-# ============================================================================
 @login_required
 def profile(request):
-    """Display and update user profile"""
     if request.method == 'POST':
         u_form = UserUpdateForm(request.POST, instance=request.user)
         s_form = StudentUpdateForm(

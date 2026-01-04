@@ -6,7 +6,6 @@
     <title>Contact Us</title>
 </head>
 <body>
-    <!-- Section 1: Page Header -->
     <section class="mb-5">
         <h1 class="mb-3">Contact Us</h1>
         <p class="lead">
@@ -16,7 +15,6 @@
     </section>
 
     <div class="row">
-        <!-- Section 2: Contact Form (Left Column) -->
         <div class="col-md-8">
             <section class="content-section mb-4">
                 <h2 class="mb-4">Send Us a Message</h2>
@@ -32,8 +30,7 @@
                 
                 <form method="POST" action="{% url 'itreporting:contact' %}">
                     {% csrf_token %}
-                    
-                    <!-- Name Field -->
+
                     <div class="mb-3">
                         <label for="name" class="form-label">Your Name *</label>
                         <input type="text" 
@@ -43,8 +40,7 @@
                                required
                                placeholder="Enter your full name">
                     </div>
-                    
-                    <!-- Email Field -->
+
                     <div class="mb-3">
                         <label for="email" class="form-label">Email Address *</label>
                         <input type="email" 
@@ -55,7 +51,6 @@
                                placeholder="your.email@example.com">
                     </div>
                     
-                    <!-- Subject Field -->
                     <div class="mb-3">
                         <label for="subject" class="form-label">Subject *</label>
                         <input type="text" 
@@ -66,7 +61,6 @@
                                placeholder="Brief subject of your enquiry">
                     </div>
                     
-                    <!-- Message Field (Textarea) -->
                     <div class="mb-3">
                         <label for="message" class="form-label">Message *</label>
                         <textarea class="form-control" 
@@ -77,8 +71,7 @@
                                   placeholder="Please provide details of your enquiry..."></textarea>
                         <small class="form-text text-muted">Maximum 1000 characters</small>
                     </div>
-                    
-                    <!-- Submit Button -->
+
                     <div class="mb-3">
                         <button type="submit" class="btn btn-primary btn-lg">
                             <i class="bi bi-send"></i> Send Message
@@ -88,7 +81,6 @@
             </section>
         </div>
         
-        <!-- Section 3: Contact Information (Right Column) -->
         <div class="col-md-4">
             <section class="content-section mb-4">
                 <h3 class="mb-3">Contact Information</h3>
@@ -128,7 +120,6 @@
                 </div>
             </section>
             
-            <!-- FAQ Quick Links -->
             <section class="content-section">
                 <h3 class="mb-3">Quick Help</h3>
                 <ul class="list-group">
